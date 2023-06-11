@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_2.dtd'>
+<nta>
+  <declaration>
+    broadcast chan connect, disconnect, transmit, receive, error;
+    clock x;
+  </declaration>
+  <template>
+    <name>Sender</name>
+    <declaration></declaration>
+    <location id="id0" x="-59" y="0">
+      <name x="-67" y="-34">Init</name>
+    </location>
+    <location id="id1" x="159" y="0">
+      <name x="127" y="17">Connected</name>
+      <committed/>
+    </location>
+    <location id="id2" x="394" y="0">
+      <name x="348" y="-34">Transmitting</name>
+    </location>
+    <init ref="id0"/>
+    <transition>
+      <source ref="id0"/>
+      <target ref="id1"/>
+      <label kind="synchronisation" x="50" y="-20">connect!</label>
+    </transition>
+    <transition>
+      <source ref="id1"/>
+      <target ref="id2"/>
+      <label kind="guard" x="221" y="8">x &gt;= 10</label>
+      <label kind="synchronisation" x="195" y="-42">transmit!</label>
+      <label kind="assignment" x="229" y="25">x = 0</label>
+    </transition>
+    <transition>
+      <source ref="id2"/>
+      <target ref="id1"/>
+      <label kind="synchronisation" x="221" y="-17">receive?</label>
+    </transition>
+  </template>
+  <template>
+    <name>Receiver</name>
+    <declaration></declaration>
+    <location id="id3" x="-192" y="3">
+      <name x="-204" y="-34">Idle</name>
+    </location>
+    <location id="id4" x="68" y="0">
+      <name x="34" y="-34">Connected</name>
+    </location>
+    <location id="id5" x="331" y="0">
+      <name x="297" y="17">Receiving</name>
+    </location>
+    <init ref="id3"/>
+    <transition>
+      <source ref="id3"/>
+      <target ref="id4"/>
+      <label kind="synchronisation" x="-85" y="8">connect?</label>
+    </transition>
+    <transition>
+      <source ref="id4"/>
+      <target ref="id5"/>
+      <label kind="synchronisation" x="161" y="8">transmit?</label>
+    </transition>
+    <transition>
+      <source ref="id5"/>
+      <target ref="id4"/>
+      <label kind="synchronisation" x="161" y="-25">receive!</label>
+    </transition>
+  </template>
+  <system>
+    system Sender, Receiver;
+  </system>
+  <queries>
+    <query>
+      <formula></formula>
+      <comment></comment>
+    </query>
+  </queries>
+</nta>
